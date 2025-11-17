@@ -1,0 +1,26 @@
+server:
+  port: ${TODO_SERVICE_PORT:8080}  # Default to 8080 if env var not set
+
+spring:
+  application:
+    name: todo-service
+
+  datasource:
+    url: ${TODO_DB_URL}
+    username: ${TODO_DB_USERNAME}
+    password: ${TODO_DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: ${TODO_JPA_DDL}
+    show-sql: ${TODO_JPA_SHOW_SQL}
+    properties:
+      hibernate:
+        format_sql: true
+#        dialect: org.hibernate.dialect.PostgreSQLDialect
+
+logging:
+  level:
+    org.hibernate.SQL: DEBUG
+    org.hibernate.type.descriptor.sql.BasicBinder: TRACE
