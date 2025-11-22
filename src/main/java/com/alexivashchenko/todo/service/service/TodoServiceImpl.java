@@ -23,7 +23,8 @@ public class TodoServiceImpl implements TodoService {
     public TodoResponseDto createTodo(TodoRequestDto request) {
         Todo todo = todoMapper.toEntity(request);
         if (todoRepository.existsByTitleAndUserId(request.title(), request.userId())) {
-            throw new IllegalArgumentException("Todo with title " + request.title() + " already exists for this user");
+            throw new IllegalArgumentException("Todo with title " + request.title() +
+                    " already exists for user with id " + request.userId());
         }
         return todoMapper.toResponseDto(todoRepository.save(todo));
     }
@@ -49,9 +50,6 @@ public class TodoServiceImpl implements TodoService {
                 .orElseThrow(() -> new TodoNotFoundException(id));
         if (!todo.getUserId().equals(request.userId())) {
             throw new SecurityException("You are not allowed to modify this todo");
-        }
-        if (todoRepository.existsByTitleAndUserId(request.title(), request.userId())) {
-            throw new IllegalArgumentException("Todo with title " + request.title() + " already exists for this user");
         }
         validateStatusTransition(todo.getStatus(), request.status());
         todo.setTitle(request.title());
@@ -82,11 +80,11 @@ public class TodoServiceImpl implements TodoService {
     }
 
     private void validateStatusTransition(Status oldStatus, Status newStatus) {
-        if (oldStatus == Status.CANCELED && newStatus != Status.CANCELED) {
-            throw new IllegalStateException("Cannot reopen a canceled todo");
-        }
-        if (oldStatus == Status.COMPLETED && newStatus != Status.COMPLETED) {
-            throw new IllegalStateException("Cannot reopen a completed todo");
-        }
+//        if (oldStatus == Status.CANCELED && newStatus != Status.CANCELED) {
+//            throw new IllegalStateException("Cannot reopen a canceled todo");
+//        }
+//        if (oldStatus == Status.COMPLETED && newStatus != Status.COMPLETED) {
+//            throw new IllegalStateException("Cannot reopen a completed todo");
+//        }
     }
 }

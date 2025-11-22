@@ -31,3 +31,11 @@ build/
 
 ### VS Code ###
 .vscode/
+
+### Mac OS ###
+.DS_Store
+
+# Ignore all environment files
+.env
+.env.*
+!example.env   # Keep only a template example for others
