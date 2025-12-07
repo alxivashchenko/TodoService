@@ -6,15 +6,16 @@ import com.alexivashchenko.todo.service.dto.TodoResponseDto;
 import java.util.List;
 
 public interface TodoService {
-    TodoResponseDto createTodo(TodoRequestDto request);
+    List<TodoResponseDto> getAllTodosByUserId(String userId) ;
 
-    TodoResponseDto getTodoById(Long id);
+//    List<TodoResponseDto> getAllTodos(String userId);
 
-    List<TodoResponseDto> getAllTodos();
+    TodoResponseDto getTodoById(Long id, String userId);
 
-    TodoResponseDto updateTodo(Long id, TodoRequestDto request);
+    TodoResponseDto createTodo(TodoRequestDto request, String userId);
 
-    void deleteTodo(Long id, Long userId);
+    TodoResponseDto updateTodo(Long id, TodoRequestDto request, String userId);
 
-    List<TodoResponseDto> getAllTodosByUserId(Long userId);
+    void deleteTodo(Long id, String userId);
+
 }

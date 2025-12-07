@@ -29,7 +29,9 @@ public class Todo {
 
     @Enumerated(EnumType.STRING)
     private Status status = Status.TODO;
-    private Long userId;
+
+    @Column(nullable = false)
+    private String userId;  // comes from Gateway header
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;

@@ -1,5 +1,5 @@
 server:
-  port: ${TODO_SERVICE_PORT:8080}  # Default to 8080 if env var not set
+  port: ${TODO_SERVICE_PORT}  # Default to 8082 if env var not set
 
 spring:
   application:

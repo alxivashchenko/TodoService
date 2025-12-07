@@ -2,7 +2,9 @@ package com.alexivashchenko.todo.service.controller;
 
 import com.alexivashchenko.todo.service.dto.TodoRequestDto;
 import com.alexivashchenko.todo.service.dto.TodoResponseDto;
+import com.alexivashchenko.todo.service.exception.UnauthorizedException;
 import com.alexivashchenko.todo.service.service.TodoService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,36 +19,40 @@ public class TodoController {
 
     private final TodoService todoService;
 
-    @PostMapping
-    public ResponseEntity<TodoResponseDto> createTodo(@Valid @RequestBody TodoRequestDto request) {
-        return ResponseEntity.ok(todoService.createTodo(request));
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable Long id) {
-        return ResponseEntity.ok(todoService.getTodoById(id));
+    private String getUserIdFromHeader(HttpServletRequest request) {
+        String userId = request.getHeader("X-User-Id");
+        if (userId == null)
+            throw new UnauthorizedException("Missing user identity");
+        return userId;
     }
 
     @GetMapping
-    public ResponseEntity<List<TodoResponseDto>> getAllTodos() {
-        return ResponseEntity.ok(todoService.getAllTodos());
+    public ResponseEntity<List<TodoResponseDto>> getAllTodos(HttpServletRequest req) {
+        return ResponseEntity.ok(todoService.getAllTodosByUserId(getUserIdFromHeader(req)));
     }
 
-    @GetMapping("/user/{userId}")
-    public ResponseEntity<List<TodoResponseDto>> getAllTodosByUserId(@PathVariable Long userId) {
-        return ResponseEntity.ok(todoService.getAllTodosByUserId(userId));
+    @GetMapping("/{id}")
+    public ResponseEntity<TodoResponseDto> getTodoById(@PathVariable Long id, HttpServletRequest req) {
+        return ResponseEntity.ok(todoService.getTodoById(id, getUserIdFromHeader(req)));
+    }
+
+    @PostMapping
+    public ResponseEntity<TodoResponseDto> createTodo(@Valid @RequestBody TodoRequestDto request,
+                                                      HttpServletRequest req) {
+        return ResponseEntity.ok(todoService.createTodo(request, getUserIdFromHeader(req)));
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<TodoResponseDto> updateTodo(@PathVariable Long id,
-                                                      @Valid @RequestBody TodoRequestDto request) {
-        return ResponseEntity.ok(todoService.updateTodo(id, request));
+                                                      @Valid @RequestBody TodoRequestDto request,
+                                                      HttpServletRequest req) {
+        return ResponseEntity.ok(todoService.updateTodo(id, request, getUserIdFromHeader(req)));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteTodo(@PathVariable Long id,
-                                           @RequestParam Long userId) {
-        todoService.deleteTodo(id, userId);
+                                           HttpServletRequest req) {
+        todoService.deleteTodo(id, getUserIdFromHeader(req));
         return ResponseEntity.noContent().build();
     }
 

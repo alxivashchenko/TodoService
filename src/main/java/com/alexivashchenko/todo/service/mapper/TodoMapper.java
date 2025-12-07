@@ -13,7 +13,7 @@ public class TodoMapper {
                 .title(request.title())
                 .description(request.description())
                 .status(request.status())
-                .userId(request.userId())
+//                .userId(request.userId())
                 .build();
     }
 
@@ -22,8 +22,8 @@ public class TodoMapper {
                 todo.getId(),
                 todo.getTitle(),
                 todo.getDescription(),
-                todo.getStatus(),
-                todo.getUserId()
+                todo.getStatus()
+//                todo.getUserId()
         );
     }
 

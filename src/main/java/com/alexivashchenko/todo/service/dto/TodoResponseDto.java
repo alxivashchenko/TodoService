@@ -8,7 +8,7 @@ public record TodoResponseDto(
         Long id,
         String title,
         String description,
-        Status status,
-        Long userId
+        Status status
+//        String userId
 ) {
 }
