@@ -6,9 +6,9 @@ spring:
     name: todo-service
 
   datasource:
-    url: ${TODO_DB_URL}
-    username: ${TODO_DB_USERNAME}
-    password: ${TODO_DB_PASSWORD}
+    url: ${SPRING_DATASOURCE_URL}
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
     driver-class-name: org.postgresql.Driver
 
   jpa:
