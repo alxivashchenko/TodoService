@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Entity
 @Table(name = "todos")
@@ -31,7 +31,7 @@ public class Todo {
     private Status status = Status.TODO;
 
     @Column(nullable = false)
-    private String userId;  // comes from Gateway header
+    private UUID userId;  // comes from Gateway header
 
     @Column(nullable = false, updatable = false)
     private Instant createdAt;

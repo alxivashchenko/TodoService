@@ -12,6 +12,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -22,7 +23,7 @@ public class TodoServiceImpl implements TodoService {
 
 
     @Override
-    public List<TodoResponseDto> getAllTodosByUserId(String userId) {
+    public List<TodoResponseDto> getAllTodosByUserId(UUID userId) {
         return todoRepository.findAllByUserId(userId)
                 .stream()
                 .map(todoMapper::toResponseDto)
@@ -30,14 +31,14 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoResponseDto getTodoById(Long id, String userId) {
+    public TodoResponseDto getTodoById(Long id, UUID userId) {
         return todoRepository.findByIdAndUserId(id, userId)
                 .map(todoMapper::toResponseDto)
                 .orElseThrow(() -> new TodoNotFoundException(id));
     }
 
     @Override
-    public TodoResponseDto createTodo(TodoRequestDto request, String userId) {
+    public TodoResponseDto createTodo(TodoRequestDto request, UUID userId) {
         Todo todo = todoMapper.toEntity(request);
         todo.setUserId(userId); // assign owner from JWT
         if (todoRepository.existsByTitleAndUserId(request.title(), userId)) {
@@ -48,7 +49,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public TodoResponseDto updateTodo(Long id, TodoRequestDto request, String userId) {
+    public TodoResponseDto updateTodo(Long id, TodoRequestDto request, UUID userId) {
         Todo todo = todoRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ForbiddenException("You cannot modify another user's todo"));
         validateStatusTransition(todo.getStatus(), request.status());
@@ -60,7 +61,7 @@ public class TodoServiceImpl implements TodoService {
     }
 
     @Override
-    public void deleteTodo(Long id, String userId) {
+    public void deleteTodo(Long id, UUID userId) {
         Todo todo = todoRepository.findByIdAndUserId(id, userId)
                 .orElseThrow(() -> new ForbiddenException("You cannot delete another user's todo"));
         todoRepository.delete(todo);

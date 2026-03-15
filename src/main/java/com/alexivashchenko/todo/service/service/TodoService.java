@@ -4,18 +4,19 @@ import com.alexivashchenko.todo.service.dto.TodoRequestDto;
 import com.alexivashchenko.todo.service.dto.TodoResponseDto;
 
 import java.util.List;
+import java.util.UUID;
 
 public interface TodoService {
-    List<TodoResponseDto> getAllTodosByUserId(String userId) ;
+    List<TodoResponseDto> getAllTodosByUserId(UUID userId);
 
-//    List<TodoResponseDto> getAllTodos(String userId);
+//    List<TodoResponseDto> getAllTodos(UUID userId);
 
-    TodoResponseDto getTodoById(Long id, String userId);
+    TodoResponseDto getTodoById(Long id, UUID userId);
 
-    TodoResponseDto createTodo(TodoRequestDto request, String userId);
+    TodoResponseDto createTodo(TodoRequestDto request, UUID userId);
 
-    TodoResponseDto updateTodo(Long id, TodoRequestDto request, String userId);
+    TodoResponseDto updateTodo(Long id, TodoRequestDto request, UUID userId);
 
-    void deleteTodo(Long id, String userId);
+    void deleteTodo(Long id, UUID userId);
 
 }
