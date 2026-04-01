@@ -1,27 +1,22 @@
-# ---------- BUILD STAGE ----------
-FROM maven:3.9.6-eclipse-temurin-21 AS build
+# -------- BUILD STAGE --------
+FROM maven:3.9.9-eclipse-temurin-21 AS build
 
-WORKDIR /app
+WORKDIR /build
 
-# Copy pom.xml and download dependencies first (better caching)
-COPY pom.xml .
-RUN mvn -q -B dependency:go-offline
+COPY . .
 
-# Copy the rest of the project
-COPY src ./src
+RUN mvn -B -pl todo-service -am clean package -DskipTests
 
-# Build application
-RUN mvn -q -B package -DskipTests
-
-# ---------- RUNTIME STAGE ----------
+# -------- RUNTIME STAGE --------
 FROM eclipse-temurin:21-jre
-#FROM eclipse-temurin:21-jdk-jammy
 
 WORKDIR /app
 
-# Copy fat JAR from build stage (update JAR name if needed)
-COPY --from=build /app/target/*.jar app.jar
+# Copy jar from build stage
+COPY --from=build /build/todo-service/target/*.jar app.jar
 
+# Expose default Spring Boot port
 EXPOSE 8082
 
-ENTRYPOINT ["java", "-jar", "app.jar"]
+# Run the application
+ENTRYPOINT ["java","-jar","app.jar"]
