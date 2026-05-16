@@ -25,20 +25,18 @@ logging:
     org.hibernate.SQL: DEBUG
     org.hibernate.type.descriptor.sql.BasicBinder: TRACE
 
-#management:
-#  tracing:
-#    sampling:
-#      probability: 1.0
-#
-#
-#  endpoints:
-#    web:
-#      exposure:
-#        include: health,info,prometheus
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
 
 #otel:
-#  service:
-#    name: todo-service
 #  exporter:
 #    otlp:
 #      endpoint: http://otel-collector:4318
+#      protocol: http/protobuf
+
+  resource:
+    attributes:
+      service.name: todo-service
