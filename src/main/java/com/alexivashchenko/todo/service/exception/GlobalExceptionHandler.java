@@ -58,6 +58,10 @@ public class GlobalExceptionHandler {
             Exception ex,
             HttpServletRequest request
     ) {
+        System.out.println("URI = " + request.getRequestURI());
+        System.out.println("Accept = " + request.getHeader("Accept"));
+        ex.printStackTrace();
+
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
                 HttpStatus.INTERNAL_SERVER_ERROR.value(),
