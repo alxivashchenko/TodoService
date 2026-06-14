@@ -57,10 +57,15 @@ public class GlobalExceptionHandler {
     public ResponseEntity<ErrorResponse> handleException(
             Exception ex,
             HttpServletRequest request
-    ) {
-        System.out.println("URI = " + request.getRequestURI());
-        System.out.println("Accept = " + request.getHeader("Accept"));
-        ex.printStackTrace();
+    ) throws Exception {
+
+//        ex.printStackTrace();
+
+        if (request.getRequestURI().startsWith("/actuator")) {
+            System.out.println("URI = " + request.getRequestURI());
+            System.out.println("Accept = " + request.getHeader("Accept"));
+            throw ex;
+        }
 
         ErrorResponse error = new ErrorResponse(
                 LocalDateTime.now(),
