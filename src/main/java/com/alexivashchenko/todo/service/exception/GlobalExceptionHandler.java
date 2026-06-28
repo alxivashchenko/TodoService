@@ -59,8 +59,6 @@ public class GlobalExceptionHandler {
             HttpServletRequest request
     ) throws Exception {
 
-//        ex.printStackTrace();
-
         if (request.getRequestURI().startsWith("/actuator")) {
             System.out.println("URI = " + request.getRequestURI());
             System.out.println("Accept = " + request.getHeader("Accept"));
